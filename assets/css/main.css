@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-neo-bg font-neo text-neo-black;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent zoom on input focus on iOS */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+@layer components {
+  /* Neobrutalism Button - Primary */
+  .neo-btn {
+    @apply inline-flex items-center justify-center px-6 py-3 font-bold text-base
+           border-4 border-neo-black bg-neo-yellow text-neo-black
+           shadow-neo cursor-pointer select-none
+           transition-all duration-100 ease-in-out
+           hover:shadow-neo-hover hover:-translate-x-0.5 hover:-translate-y-0.5
+           active:shadow-none active:translate-x-1 active:translate-y-1
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-neo
+           disabled:translate-x-0 disabled:translate-y-0;
+  }
+
+  /* Neobrutalism Button - Secondary */
+  .neo-btn-secondary {
+    @apply neo-btn bg-neo-white;
+  }
+
+  /* Neobrutalism Button - Danger */
+  .neo-btn-danger {
+    @apply neo-btn bg-neo-red text-neo-white;
+  }
+
+  /* Neobrutalism Button - Success */
+  .neo-btn-success {
+    @apply neo-btn bg-neo-green text-neo-black;
+  }
+
+  /* Neobrutalism Input */
+  .neo-input {
+    @apply w-full px-4 py-3 font-bold text-base
+           border-4 border-neo-black bg-neo-white text-neo-black
+           shadow-neo-sm outline-none
+           focus:shadow-neo focus:-translate-x-0.5 focus:-translate-y-0.5
+           transition-all duration-100;
+  }
+
+  /* Neobrutalism Card */
+  .neo-card {
+    @apply border-4 border-neo-black bg-neo-white shadow-neo p-4;
+  }
+
+  /* Neobrutalism Card - Colored */
+  .neo-card-yellow {
+    @apply neo-card bg-neo-yellow;
+  }
+
+  .neo-card-blue {
+    @apply neo-card bg-neo-blue text-neo-white;
+  }
+
+  .neo-card-green {
+    @apply neo-card bg-neo-green;
+  }
+
+  /* Neobrutalism Badge */
+  .neo-badge {
+    @apply inline-flex items-center px-2 py-0.5 text-sm font-bold
+           border-2 border-neo-black bg-neo-yellow;
+  }
+
+  /* Neobrutalism Tag (player chip) */
+  .neo-tag {
+    @apply inline-flex items-center gap-1 px-3 py-1 text-sm font-bold
+           border-2 border-neo-black bg-neo-white shadow-neo-sm;
+  }
+
+  /* Error notification */
+  .neo-error {
+    @apply border-4 border-neo-black bg-neo-red text-neo-white
+           shadow-neo p-4 font-bold;
+  }
+
+  /* Warning notification */
+  .neo-warning {
+    @apply border-4 border-neo-black bg-neo-yellow text-neo-black
+           shadow-neo p-4 font-bold;
+  }
+}
