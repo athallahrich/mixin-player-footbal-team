@@ -58,8 +58,6 @@ useSeoMeta({
 
         <!-- Controls sidebar -->
         <div class="flex flex-col gap-3">
-
-          <!-- Mode selector (replaces old TeamCountInput) -->
           <TeamModeSelector
             :mode="store.randomizeMode"
             :team-count="store.teamCount"
@@ -86,10 +84,7 @@ useSeoMeta({
               <span>Tim terbentuk</span>
               <span class="neo-badge bg-neo-blue text-white">{{ store.previewTeamCount }}</span>
             </div>
-            <div
-              v-if="store.previewBenchCount > 0"
-              class="flex justify-between items-center"
-            >
+            <div v-if="store.previewBenchCount > 0" class="flex justify-between items-center">
               <span>Cadangan</span>
               <span class="neo-badge bg-neo-orange text-white">{{ store.previewBenchCount }}</span>
             </div>
@@ -101,22 +96,27 @@ useSeoMeta({
             </p>
           </div>
 
-          <!-- Action buttons (hidden on mobile — shown in sticky bar) -->
-          <div class="hidden md:flex flex-col gap-3">
-            <RandomizeButton
-              :disabled="!store.canRandomize"
-              :is-re-randomize="store.hasGeneratedTeams"
-              @randomize="store.randomizeTeams()"
-            />
-            <ClearButton
-              v-if="store.hasPlayers || store.hasGeneratedTeams || store.goalkeepers.length > 0"
-              @clear="store.clearAll()"
-            />
-          </div>
+          <!-- Action buttons — visible on desktop -->
+          <RandomizeButton
+            :disabled="!store.canRandomize"
+            :is-re-randomize="store.hasGeneratedTeams"
+            @randomize="store.randomizeTeams()"
+          />
+          <ClearButton
+            v-if="store.hasPlayers || store.hasGeneratedTeams || store.goalkeepers.length > 0"
+            @clear="store.clearAll()"
+          />
         </div>
       </div>
 
-      <!-- Bench (overflow players) -->
+      <!-- Share URL — shown after teams generated -->
+      <ShareButton
+        v-if="store.hasGeneratedTeams"
+        :teams="store.generatedTeams"
+        :bench="store.bench"
+      />
+
+      <!-- Bench -->
       <BenchDisplay :bench="store.bench" />
 
       <!-- Team results -->
@@ -134,23 +134,29 @@ useSeoMeta({
 
     </main>
 
-    <!-- Sticky bottom bar (mobile only) -->
-    <div
-      v-if="store.hasPlayers || store.goalkeepers.length > 0"
-      class="fixed bottom-0 left-0 right-0 z-20 md:hidden border-t-4 border-neo-black bg-neo-bg px-3 py-2 flex gap-2"
-    >
-      <RandomizeButton
-        class="flex-1"
+    <!-- ✅ Sticky bottom bar — always visible on mobile -->
+    <div class="fixed bottom-0 left-0 right-0 z-30 md:hidden border-t-4 border-neo-black bg-neo-bg px-3 py-2 flex gap-2 shadow-[0_-4px_0_0_#000]">
+      <button
+        class="neo-btn flex-1 text-sm py-3"
+        :class="[
+          store.hasGeneratedTeams ? 'bg-neo-blue text-white' : 'bg-neo-yellow text-neo-black',
+          !store.canRandomize ? 'opacity-50 cursor-not-allowed' : ''
+        ]"
         :disabled="!store.canRandomize"
-        :is-re-randomize="store.hasGeneratedTeams"
-        @randomize="store.randomizeTeams()"
-      />
-      <ClearButton
+        @click="store.randomizeTeams()"
+      >
+        {{ store.hasGeneratedTeams ? '🔀 Acak Ulang' : '🎲 Acak Tim!' }}
+      </button>
+      <button
         v-if="store.hasPlayers || store.hasGeneratedTeams || store.goalkeepers.length > 0"
-        @clear="store.clearAll()"
-      />
+        class="neo-btn-danger text-sm py-3 px-4"
+        @click="store.clearAll()"
+      >
+        🗑️
+      </button>
     </div>
 
+    <!-- Spacer so sticky bar doesn't cover content -->
     <div class="h-20 md:hidden" />
 
     <footer class="border-t-4 border-neo-black px-4 py-3 text-center">
